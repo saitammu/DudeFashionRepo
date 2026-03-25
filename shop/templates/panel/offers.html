@@ -1,0 +1,155 @@
+{% extends "panel/base.html" %}
+{% block topbar %}
+<div class="topbar">
+  <div>
+    <h1>🎁 Offers & Promotions</h1>
+    <p>Manage banners and promo codes shown on your store</p>
+  </div>
+  <div class="topbar-right">
+    <span class="tag">{{ offers|length }} offers</span>
+    <button class="add-btn" onclick="openModal('addOfferModal')">+ New Offer</button>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+{% if offers %}
+<div class="offers-grid" style="padding:0;margin-bottom:24px">
+  {% for o in offers %}
+  <div class="offer-card {% if o.active %}active-offer{% endif %}">
+    <span class="oc-badge">
+      <span class="pill {% if o.active %}active{% else %}inactive{% endif %}">{% if o.active %}Live{% else %}Off{% endif %}</span>
+    </span>
+    <h3>{{ o.title }}</h3>
+    <div class="disc">{{ o.discount }}</div>
+    <p class="sub">{{ o.subtitle }}</p>
+    {% if o.code %}<span class="code-chip">{{ o.code }}</span>{% endif %}
+    <div class="card-actions">
+      <button class="action-btn edit-btn"
+        onclick="openEditOffer({{ o.id }},'{{ o.title|escapejs }}','{{ o.subtitle|escapejs }}','{{ o.discount|escapejs }}','{{ o.code|escapejs }}',{{ o.active|lower }})">
+        ✏️ Edit
+      </button>
+      <form method="post" action="{% url 'panel_toggle_offer' o.id %}" style="display:inline">
+        {% csrf_token %}
+        <button type="submit" class="action-btn" style="background:#fff8e1;color:#e67e22">
+          {% if o.active %}⏸ Pause{% else %}▶ Activate{% endif %}
+        </button>
+      </form>
+      <form method="post" action="{% url 'panel_delete_offer' o.id %}" onsubmit="return confirm('Delete this offer?')" style="display:inline">
+        {% csrf_token %}
+        <button type="submit" class="action-btn del-btn">🗑️</button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="section">
+  <div class="empty-state"><span class="ei">🎁</span>No offers yet — create your first promotion!</div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block modals %}
+<!-- ADD OFFER -->
+<div class="overlay" id="addOfferModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>➕ New Offer / Promotion</h3>
+      <button class="close-btn" onclick="closeModal('addOfferModal')">✕</button>
+    </div>
+    <form method="post" action="{% url 'panel_add_offer' %}">
+      {% csrf_token %}
+      <div class="modal-body">
+        <div class="field">
+          <label>Offer Title *</label>
+          <input type="text" name="title" placeholder="e.g. Summer Sale — Flat 30% OFF" required/>
+        </div>
+        <div class="field">
+          <label>Subtitle / Description</label>
+          <textarea name="subtitle" placeholder="e.g. On all shirts and T-shirts. Limited time only!"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Discount Text *</label>
+            <input type="text" name="discount" placeholder="e.g. 30% OFF or ₹500 OFF" required/>
+          </div>
+          <div class="field">
+            <label>Promo Code</label>
+            <input type="text" name="code" placeholder="e.g. DUDE30" style="text-transform:uppercase"/>
+            <p class="hint">Leave blank if no code needed</p>
+          </div>
+        </div>
+        <div class="field">
+          <label>Status</label>
+          <select name="active">
+            <option value="1">✅ Active — show on store now</option>
+            <option value="0">🔒 Save as draft</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="cancel-btn" onclick="closeModal('addOfferModal')">Cancel</button>
+        <button type="submit" class="save-btn">🎁 Publish Offer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- EDIT OFFER -->
+<div class="overlay" id="editOfferModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>✏️ Edit Offer</h3>
+      <button class="close-btn" onclick="closeModal('editOfferModal')">✕</button>
+    </div>
+    <form method="post" action="{% url 'panel_edit_offer' %}">
+      {% csrf_token %}
+      <input type="hidden" name="id" id="eo_id"/>
+      <div class="modal-body">
+        <div class="field">
+          <label>Offer Title *</label>
+          <input type="text" name="title" id="eo_title" required/>
+        </div>
+        <div class="field">
+          <label>Subtitle</label>
+          <textarea name="subtitle" id="eo_subtitle"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Discount Text *</label>
+            <input type="text" name="discount" id="eo_discount" required/>
+          </div>
+          <div class="field">
+            <label>Promo Code</label>
+            <input type="text" name="code" id="eo_code"/>
+          </div>
+        </div>
+        <div class="field">
+          <label>Status</label>
+          <select name="active" id="eo_active">
+            <option value="1">✅ Active</option>
+            <option value="0">🔒 Draft</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="cancel-btn" onclick="closeModal('editOfferModal')">Cancel</button>
+        <button type="submit" class="save-btn">💾 Update Offer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function openEditOffer(id,title,subtitle,discount,code,active){
+  document.getElementById('eo_id').value=id;
+  document.getElementById('eo_title').value=title;
+  document.getElementById('eo_subtitle').value=subtitle;
+  document.getElementById('eo_discount').value=discount;
+  document.getElementById('eo_code').value=code;
+  document.getElementById('eo_active').value=active?'1':'0';
+  openModal('editOfferModal');
+}
+</script>
+{% endblock %}

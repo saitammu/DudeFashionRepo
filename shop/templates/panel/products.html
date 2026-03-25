@@ -1,0 +1,234 @@
+{% extends "panel/base.html" %}
+{% block topbar %}
+<div class="topbar">
+  <div>
+    <h1>👕 Products</h1>
+    <p>Add, edit or remove items from your store</p>
+  </div>
+  <div class="topbar-right">
+    <span class="tag">{{ products|length }} items</span>
+    <button class="add-btn" onclick="openModal('addModal')">+ Add Product</button>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="section">
+  <table>
+    <thead>
+      <tr><th>Photo</th><th>Name</th><th>Category</th><th>Price</th><th>Discount</th><th>Badge</th><th>Status</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      {% for p in products %}
+      <tr>
+        <td><img class="thumb" src="{{ p.img_src }}" alt="{{ p.name }}"/></td>
+        <td>
+          <strong>{{ p.name }}</strong>
+          <br/><span style="color:#aaa;font-size:.75rem">{{ p.sub }}</span>
+        </td>
+        <td>{{ p.category }}</td>
+        <td>
+          <strong>₹{{ p.price }}</strong>
+          <br/><span style="color:#aaa;font-size:.75rem;text-decoration:line-through">₹{{ p.orig }}</span>
+        </td>
+        <td style="color:#27ae60;font-weight:700">{{ p.off }}% off</td>
+        <td><span class="pill {{ p.badge|lower }}">{{ p.badge }}</span></td>
+        <td><span class="pill {% if p.active %}active{% else %}inactive{% endif %}">{% if p.active %}Active{% else %}Hidden{% endif %}</span></td>
+        <td>
+          <div class="actions">
+            <button class="action-btn edit-btn"
+              onclick="openEdit({{ p.id }},'{{ p.name|escapejs }}','{{ p.category }}','{{ p.sub|escapejs }}',{{ p.price }},{{ p.orig }},'{{ p.badge }}','{{ p.image_url }}',{{ p.active|lower }},{{ p.order }})">
+              ✏️ Edit
+            </button>
+            <form method="post" action="{% url 'panel_delete_product' p.id %}" onsubmit="return confirm('Delete {{ p.name }}?')">
+              {% csrf_token %}
+              <button type="submit" class="action-btn del-btn">🗑️</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="8"><div class="empty-state"><span class="ei">👕</span>No products yet — add your first one!</div></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block modals %}
+<!-- ADD MODAL -->
+<div class="overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>➕ Add New Product</h3>
+      <button class="close-btn" onclick="closeModal('addModal')">✕</button>
+    </div>
+    <form method="post" action="{% url 'panel_add_product' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="modal-body">
+        <div class="field">
+          <label>Product Name *</label>
+          <input type="text" name="name" placeholder="e.g. Classic Oxford Shirt" required/>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Category *</label>
+            <select name="category" required>
+              <option value="">— Select —</option>
+              <option>Shirts</option>
+              <option>T-Shirts</option>
+              <option>Jeans &amp; Pants</option>
+              <option>Shorts &amp; Inners</option>
+              <option>Hoodies &amp; Jackets</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Sub-category</label>
+            <input type="text" name="sub" placeholder="e.g. Slim Fit, Casual"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Selling Price (₹) *</label>
+            <input type="number" name="price" placeholder="799" min="1" required/>
+          </div>
+          <div class="field">
+            <label>MRP / Original (₹) *</label>
+            <input type="number" name="orig" placeholder="1299" min="1" required/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Badge</label>
+            <select name="badge">
+              <option value="NEW">🆕 NEW</option>
+              <option value="HOT">🔥 HOT</option>
+              <option value="SALE">🏷️ SALE</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Display Order</label>
+            <input type="number" name="order" value="0" min="0"/>
+          </div>
+        </div>
+        <div class="field">
+          <label>📤 Upload Photo</label>
+          <input type="file" name="image" accept="image/*"/>
+          <p class="hint">Upload a photo from your device (JPG, PNG, WebP)</p>
+        </div>
+        <div class="field">
+          <label>🔗 Or Paste Image URL</label>
+          <input type="url" name="image_url" placeholder="https://example.com/shirt.jpg"/>
+          <p class="hint">Uploaded photo takes priority over URL</p>
+        </div>
+        <div class="field">
+          <label>Status</label>
+          <select name="active">
+            <option value="1">✅ Active (visible in store)</option>
+            <option value="0">🔒 Hidden</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="cancel-btn" onclick="closeModal('addModal')">Cancel</button>
+        <button type="submit" class="save-btn">💾 Save Product</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>✏️ Edit Product</h3>
+      <button class="close-btn" onclick="closeModal('editModal')">✕</button>
+    </div>
+    <form method="post" action="{% url 'panel_edit_product' %}" enctype="multipart/form-data" id="editForm">
+      {% csrf_token %}
+      <input type="hidden" name="id" id="edit_id"/>
+      <div class="modal-body">
+        <div class="field">
+          <label>Product Name *</label>
+          <input type="text" name="name" id="edit_name" required/>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Category *</label>
+            <select name="category" id="edit_category" required>
+              <option>Shirts</option>
+              <option>T-Shirts</option>
+              <option>Jeans &amp; Pants</option>
+              <option>Shorts &amp; Inners</option>
+              <option>Hoodies &amp; Jackets</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Sub-category</label>
+            <input type="text" name="sub" id="edit_sub"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Selling Price (₹) *</label>
+            <input type="number" name="price" id="edit_price" min="1" required/>
+          </div>
+          <div class="field">
+            <label>MRP / Original (₹) *</label>
+            <input type="number" name="orig" id="edit_orig" min="1" required/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Badge</label>
+            <select name="badge" id="edit_badge">
+              <option value="NEW">🆕 NEW</option>
+              <option value="HOT">🔥 HOT</option>
+              <option value="SALE">🏷️ SALE</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Display Order</label>
+            <input type="number" name="order" id="edit_order" min="0"/>
+          </div>
+        </div>
+        <div class="field">
+          <label>📤 Replace Photo (optional)</label>
+          <input type="file" name="image" accept="image/*"/>
+        </div>
+        <div class="field">
+          <label>🔗 Image URL</label>
+          <input type="url" name="image_url" id="edit_image_url"/>
+        </div>
+        <div class="field">
+          <label>Status</label>
+          <select name="active" id="edit_active">
+            <option value="1">✅ Active</option>
+            <option value="0">🔒 Hidden</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="cancel-btn" onclick="closeModal('editModal')">Cancel</button>
+        <button type="submit" class="save-btn">💾 Update Product</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function openEdit(id,name,cat,sub,price,orig,badge,imgurl,active,order){
+  document.getElementById('edit_id').value = id;
+  document.getElementById('edit_name').value = name;
+  document.getElementById('edit_sub').value = sub;
+  document.getElementById('edit_price').value = price;
+  document.getElementById('edit_orig').value = orig;
+  document.getElementById('edit_image_url').value = imgurl;
+  document.getElementById('edit_order').value = order;
+  document.getElementById('edit_category').value = cat;
+  document.getElementById('edit_badge').value = badge;
+  document.getElementById('edit_active').value = active ? '1' : '0';
+  openModal('editModal');
+}
+</script>
+{% endblock %}

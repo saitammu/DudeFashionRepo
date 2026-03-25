@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Dashboard — DudeFashion Admin</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f4f5f7;color:#111;min-height:100vh;display:flex}
+
+/* SIDEBAR */
+.sidebar{width:240px;min-height:100vh;background:linear-gradient(180deg,#111 0%,#1a1a2e 100%);
+         flex-shrink:0;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100}
+.sidebar-logo{padding:28px 20px 20px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sidebar-logo .icon{font-size:28px}
+.sidebar-logo h2{color:#E8C547;font-size:1rem;font-weight:800;letter-spacing:.5px;margin-top:4px}
+.sidebar-logo p{color:#666;font-size:.72rem;margin-top:2px}
+nav{padding:16px 0;flex:1}
+.nav-label{color:#555;font-size:.65rem;font-weight:700;text-transform:uppercase;
+            letter-spacing:1px;padding:12px 20px 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:11px 20px;color:#aaa;
+          font-size:.88rem;font-weight:500;text-decoration:none;transition:all .2s;cursor:pointer;border:none;
+          background:none;width:100%;text-align:left}
+.nav-item:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-item.active{color:#E8C547;background:rgba(232,197,71,.12);border-right:3px solid #E8C547}
+.nav-item .ic{font-size:16px;width:20px}
+.sidebar-foot{padding:16px 20px;border-top:1px solid rgba(255,255,255,.08)}
+.user-badge{display:flex;align-items:center;gap:10px}
+.user-avatar{width:34px;height:34px;background:#E8C547;border-radius:50%;display:flex;
+             align-items:center;justify-content:center;font-weight:800;color:#111;font-size:.85rem}
+.user-info p{color:#ccc;font-size:.8rem;font-weight:600}
+.user-info span{color:#666;font-size:.7rem}
+.logout-btn{margin-top:12px;width:100%;padding:9px;background:rgba(255,255,255,.06);
+            border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#aaa;
+            font-size:.8rem;cursor:pointer;transition:.2s}
+.logout-btn:hover{background:rgba(255,80,80,.15);color:#ff6b6b;border-color:rgba(255,80,80,.3)}
+
+/* MAIN */
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:#fff;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;
+        border-bottom:1px solid #e8e8e8;position:sticky;top:0;z-index:50}
+.topbar h1{font-size:1.15rem;font-weight:700;color:#111}
+.topbar p{color:#888;font-size:.8rem;margin-top:1px}
+.topbar-right{display:flex;gap:10px;align-items:center}
+.tag{background:#f0f0f0;color:#555;font-size:.72rem;padding:4px 10px;border-radius:20px;font-weight:600}
+
+.content{padding:28px;flex:1}
+
+/* STAT CARDS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat-card{background:#fff;border-radius:14px;padding:20px 22px;border:1px solid #eee;
+           display:flex;align-items:center;gap:16px}
+.stat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;
+           justify-content:center;font-size:22px;flex-shrink:0}
+.stat-card.yellow .stat-icon{background:#fff8e1}
+.stat-card.green .stat-icon{background:#e8f5e9}
+.stat-card.blue .stat-icon{background:#e3f2fd}
+.stat-card.red .stat-icon{background:#fce4ec}
+.stat-val{font-size:1.6rem;font-weight:800;color:#111;line-height:1}
+.stat-lbl{color:#888;font-size:.78rem;margin-top:4px}
+
+/* SECTION */
+.section{background:#fff;border-radius:14px;border:1px solid #eee;margin-bottom:24px;overflow:hidden}
+.section-head{padding:18px 22px;display:flex;align-items:center;justify-content:space-between;
+              border-bottom:1px solid #f0f0f0}
+.section-head h2{font-size:1rem;font-weight:700;color:#111}
+.section-head p{color:#888;font-size:.78rem;margin-top:2px}
+.add-btn{background:#E8C547;color:#111;border:none;padding:9px 18px;border-radius:8px;
+         font-size:.82rem;font-weight:700;cursor:pointer;transition:.15s;text-decoration:none;display:inline-block}
+.add-btn:hover{background:#d4a800;transform:translateY(-1px)}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse}
+th{background:#f8f9fa;color:#666;font-size:.72rem;font-weight:700;text-transform:uppercase;
+   letter-spacing:.5px;padding:11px 16px;text-align:left;border-bottom:1px solid #eee}
+td{padding:13px 16px;border-bottom:1px solid #f5f5f5;font-size:.87rem;color:#333;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafafa}
+.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:700}
+.pill.hot{background:#fff0e0;color:#e67e22}
+.pill.new{background:#e8f5e9;color:#27ae60}
+.pill.sale{background:#fce4ec;color:#e91e63}
+.pill.active{background:#e8f5e9;color:#2e7d32}
+.pill.inactive{background:#f5f5f5;color:#999}
+.thumb{width:44px;height:52px;object-fit:cover;border-radius:7px;border:1px solid #eee}
+.action-btn{border:none;padding:5px 10px;border-radius:6px;font-size:.75rem;cursor:pointer;font-weight:600;transition:.15s}
+.edit-btn{background:#e3f2fd;color:#1565c0}
+.edit-btn:hover{background:#1565c0;color:#fff}
+.del-btn{background:#fce4ec;color:#c62828}
+.del-btn:hover{background:#c62828;color:#fff}
+.actions{display:flex;gap:6px}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;
+         align-items:center;justify-content:center;padding:16px}
+.overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:560px;max-height:90vh;
+       overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,.3)}
+.modal-head{padding:22px 24px 16px;border-bottom:1px solid #eee;display:flex;
+            align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1}
+.modal-head h3{font-size:1.05rem;font-weight:700}
+.close-btn{background:#f0f0f0;border:none;width:32px;height:32px;border-radius:50%;
+           cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.close-btn:hover{background:#e0e0e0}
+.modal-body{padding:22px 24px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:.78rem;font-weight:600;color:#555;margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
+.field input,.field select,.field textarea{width:100%;padding:10px 13px;border:2px solid #e8e8e8;
+  border-radius:8px;font-size:.9rem;outline:none;transition:.2s;color:#111;font-family:inherit}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#E8C547;box-shadow:0 0 0 3px rgba(232,197,71,.15)}
+.field textarea{resize:vertical;min-height:70px}
+.field .hint{color:#aaa;font-size:.72rem;margin-top:4px}
+.modal-foot{padding:16px 24px;border-top:1px solid #eee;display:flex;justify-content:flex-end;gap:10px;
+            position:sticky;bottom:0;background:#fff}
+.cancel-btn{padding:10px 20px;border:2px solid #e8e8e8;border-radius:8px;background:#fff;
+            font-size:.87rem;font-weight:600;cursor:pointer;color:#666}
+.cancel-btn:hover{border-color:#ccc}
+.save-btn{padding:10px 24px;background:#E8C547;border:none;border-radius:8px;
+          font-size:.87rem;font-weight:700;color:#111;cursor:pointer;transition:.15s}
+.save-btn:hover{background:#d4a800}
+.empty-state{text-align:center;padding:48px 24px;color:#aaa}
+.empty-state .ei{font-size:40px;display:block;margin-bottom:8px}
+
+/* ALERT */
+.alert{padding:12px 18px;border-radius:8px;font-size:.85rem;font-weight:500;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.alert.success{background:#e8f5e9;color:#2e7d32;border:1px solid #c8e6c9}
+.alert.error{background:#fce4ec;color:#c62828;border:1px solid #ffcdd2}
+
+/* OFFER CARD */
+.offers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;padding:20px 22px}
+.offer-card{border:2px solid #e8e8e8;border-radius:12px;padding:18px;position:relative;transition:.2s}
+.offer-card.active-offer{border-color:#E8C547;background:#fffdf0}
+.offer-card .oc-badge{position:absolute;top:12px;right:12px}
+.offer-card h3{font-size:.95rem;font-weight:700;color:#111;margin-bottom:4px;padding-right:60px}
+.offer-card .disc{font-size:1.4rem;font-weight:800;color:#E8C547;margin:8px 0}
+.offer-card .sub{color:#888;font-size:.8rem;margin-bottom:10px}
+.offer-card .code-chip{display:inline-block;background:#111;color:#E8C547;padding:4px 12px;
+                        border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:1px}
+.offer-card .card-actions{margin-top:14px;display:flex;gap:8px}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="icon">👔</div>
+    <h2>DUDE FASHION</h2>
+    <p>Admin Panel</p>
+  </div>
+  <nav>
+    <div class="nav-label">Menu</div>
+    <a href="{% url 'panel_dashboard' %}" class="nav-item {% if active == 'dash' %}active{% endif %}">
+      <span class="ic">📊</span> Dashboard
+    </a>
+    <a href="{% url 'panel_products' %}" class="nav-item {% if active == 'products' %}active{% endif %}">
+      <span class="ic">👕</span> Products
+    </a>
+    <a href="{% url 'panel_offers' %}" class="nav-item {% if active == 'offers' %}active{% endif %}">
+      <span class="ic">🎁</span> Offers & Promos
+    </a>
+    <div class="nav-label" style="margin-top:8px">Store</div>
+    <a href="/" target="_blank" class="nav-item">
+      <span class="ic">🏠</span> View Homepage
+    </a>
+    <a href="/shop/" target="_blank" class="nav-item">
+      <span class="ic">🛍️</span> View Shop
+    </a>
+  </nav>
+  <div class="sidebar-foot">
+    <div class="user-badge">
+      <div class="user-avatar">{{ request.session.panel_user|slice:":1"|upper }}</div>
+      <div class="user-info">
+        <p>{{ request.session.panel_user }}</p>
+        <span>Manager</span>
+      </div>
+    </div>
+    <form method="post" action="{% url 'panel_logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="logout-btn">🚪 Sign Out</button>
+    </form>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  {% block topbar %}{% endblock %}
+  <div class="content">
+    {% if messages %}
+      {% for msg in messages %}
+      <div class="alert {{ msg.tags }}">
+        {% if msg.tags == 'success' %}✅{% else %}⚠️{% endif %} {{ msg }}
+      </div>
+      {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+  </div>
+</main>
+
+{% block modals %}{% endblock %}
+
+<script>
+function openModal(id){ document.getElementById(id).classList.add('open') }
+function closeModal(id){ document.getElementById(id).classList.remove('open') }
+document.querySelectorAll('.overlay').forEach(o=>{
+  o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('open') })
+})
+</script>
+</body>
+</html>

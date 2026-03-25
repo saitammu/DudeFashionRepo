@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Shop – DUDE FASHION | Men's Wear Bhimavaram</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:#f8f8f8;color:#111;overflow-x:hidden}
+:root{--accent:#E8C547;--green:#25D366;--r:14px;--sh:0 4px 24px rgba(0,0,0,.09)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:#111;border-radius:3px}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:900;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;padding:0 4%;height:64px;gap:1rem}
+.logo{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:#111;text-decoration:none;white-space:nowrap}.logo em{font-style:normal;color:var(--accent)}
+.nav-links{display:flex;gap:1.8rem;list-style:none}.nav-links a{text-decoration:none;font-size:.86rem;font-weight:500;color:#666;transition:.2s}.nav-links a:hover,.nav-links a.active{color:#111;font-weight:600}
+.bag-btn{position:relative;background:#111;color:#fff;border:none;border-radius:50px;padding:.5rem 1.1rem;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.84rem;cursor:pointer;display:flex;align-items:center;gap:.4rem;transition:.2s;white-space:nowrap}.bag-btn:hover{background:var(--accent);color:#111}
+.bag-count{position:absolute;top:-6px;right:-6px;background:#e74c3c;color:#fff;width:18px;height:18px;border-radius:50%;font-size:.62rem;font-weight:700;display:none;align-items:center;justify-content:center}.bag-count.on{display:flex}
+
+/* LAYOUT */
+.shop-layout{display:grid;grid-template-columns:260px 1fr;gap:0;min-height:calc(100vh - 64px)}
+
+/* SIDEBAR */
+.sidebar{background:#fff;border-right:1px solid #efefef;padding:1.8rem 1.4rem;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto}
+.sidebar::-webkit-scrollbar{width:3px}.sidebar::-webkit-scrollbar-thumb{background:#ddd}
+.sidebar h3{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;margin-bottom:1.2rem;padding-bottom:.8rem;border-bottom:1px solid #f0f0f0}
+.cat-section{margin-bottom:1.4rem}
+.cat-head{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:.5rem .6rem;border-radius:10px;transition:.2s;margin-bottom:.3rem}
+.cat-head:hover{background:#f8f8f8}
+.cat-head.active{background:#111;color:#fff}
+.cat-head-name{font-weight:600;font-size:.88rem;display:flex;align-items:center;gap:.5rem}
+.cat-head-count{font-size:.7rem;opacity:.6}
+.cat-arrow{font-size:.7rem;transition:.3s}
+.cat-head.open .cat-arrow{transform:rotate(90deg)}
+.sub-list{display:none;padding-left:.5rem;margin-top:.2rem}
+.sub-list.open{display:block}
+.sub-btn{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;padding:.4rem .6rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;color:#666;cursor:pointer;transition:.2s;text-align:left}
+.sub-btn:hover{background:#f5f5f5;color:#111}
+.sub-btn.active{background:var(--accent);color:#111;font-weight:600}
+.sub-count{font-size:.68rem;opacity:.6}
+.clear-filter{width:100%;background:none;border:1.5px solid #e8e8e8;border-radius:10px;padding:.5rem;font-family:'DM Sans',sans-serif;font-size:.8rem;color:#888;cursor:pointer;margin-top:1rem;transition:.2s}
+.clear-filter:hover{border-color:#111;color:#111}
+
+/* MAIN */
+.main{padding:1.8rem 2rem}
+.shop-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
+.shop-header h1{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900}
+.result-count{font-size:.84rem;color:#999}
+.sort-sel{border:1.5px solid #e8e8e8;border-radius:10px;padding:.45rem .9rem;font-family:'DM Sans',sans-serif;font-size:.82rem;cursor:pointer;background:#fff;color:#111}
+
+/* PRODUCT GRID */
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+.prod-card{background:#fff;border-radius:var(--r);overflow:hidden;border:1.5px solid #efefef;transition:.3s;position:relative}
+.prod-card:hover{box-shadow:var(--sh);transform:translateY(-3px)}
+.prod-img{position:relative;aspect-ratio:3/4;overflow:hidden;background:#f0f0f0}
+.prod-img img{width:100%;height:100%;object-fit:cover;transition:.4s;display:block}
+.prod-card:hover .prod-img img{transform:scale(1.05)}
+.badge{position:absolute;top:10px;left:10px;border-radius:50px;padding:.2rem .6rem;font-size:.62rem;font-weight:700;letter-spacing:.04em}
+.bh{background:#111;color:#fff}.bn{background:var(--accent);color:#111}.bs{background:#ffe8e8;color:#c0392b;border:1px solid #fcc}
+.prod-actions{position:absolute;bottom:0;left:0;right:0;padding:8px;display:flex;gap:7px;transform:translateY(100%);transition:.3s}
+.prod-card:hover .prod-actions{transform:translateY(0)}
+.btn-add{flex:1;background:rgba(255,255,255,.96);color:#111;border:none;border-radius:9px;padding:.55rem;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.75rem;cursor:pointer;transition:.2s;backdrop-filter:blur(4px)}
+.btn-add:hover{background:#111;color:#fff}
+.btn-wa-q{background:var(--green);color:#fff;border:none;border-radius:9px;padding:.55rem .7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0}
+.btn-wa-q:hover{opacity:.85}
+.prod-info{padding:.85rem .95rem 1rem}
+.prod-sub{font-size:.63rem;font-weight:700;letter-spacing:.1em;color:#ccc;text-transform:uppercase}
+.prod-info h4{font-size:.9rem;font-weight:600;margin:.22rem 0 .45rem;color:#111;line-height:1.3}
+.pricing{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap}
+.p-now{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700}
+.p-old{font-size:.78rem;color:#ccc;text-decoration:line-through}
+.p-off{font-size:.66rem;font-weight:600;color:#27ae60;background:#f0faf4;border-radius:50px;padding:.08rem .38rem}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:5rem 2rem;color:#ccc}
+.empty div{font-size:3rem;margin-bottom:1rem}
+.empty p{font-size:.95rem;line-height:1.6}
+
+/* ── CART POPUP OVERLAY ────────────────────────────────────── */
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:2000;display:none;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(3px)}
+.cart-overlay.open{display:flex}
+.cart-modal{background:#fff;border-radius:20px;width:min(520px,100%);max-height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.22);animation:popIn .25s ease}
+@keyframes popIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+.cm-head{padding:1.2rem 1.5rem;border-bottom:1px solid #f5f5f5;display:flex;align-items:center;justify-content:space-between}
+.cm-head h3{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700}
+.cm-close{width:32px;height:32px;border-radius:50%;background:#f5f5f5;border:none;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:.2s}.cm-close:hover{background:#111;color:#fff}
+.cm-body{flex:1;overflow-y:auto;padding:1rem 1.5rem}
+.cm-body::-webkit-scrollbar{width:3px}.cm-body::-webkit-scrollbar-thumb{background:#eee}
+.cm-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 0;color:#ccc;gap:.8rem}
+.cm-empty div{font-size:3rem}
+.cm-empty p{font-size:.88rem;text-align:center;line-height:1.6}
+.ci{display:flex;gap:1rem;padding:.9rem 0;border-bottom:1px solid #f8f8f8;align-items:flex-start}
+.ci-img{width:68px;height:78px;border-radius:11px;overflow:hidden;flex-shrink:0;background:#f5f5f5}.ci-img img{width:100%;height:100%;object-fit:cover}
+.ci-info{flex:1}
+.ci-sub{font-size:.62rem;font-weight:700;letter-spacing:.09em;color:#ccc;text-transform:uppercase}
+.ci-name{font-size:.86rem;font-weight:600;color:#111;margin:.15rem 0 .2rem;line-height:1.3}
+.ci-price{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#111}
+.ci-qty{display:flex;align-items:center;gap:.45rem;margin-top:.4rem}
+.q-btn{width:26px;height:26px;border-radius:7px;background:#f5f5f5;border:none;cursor:pointer;font-size:.9rem;font-weight:700;transition:.2s;display:flex;align-items:center;justify-content:center}.q-btn:hover{background:#111;color:#fff}
+.q-val{font-size:.86rem;font-weight:600;min-width:20px;text-align:center}
+.ci-remove{background:none;border:none;color:#ddd;cursor:pointer;font-size:.7rem;padding:0;transition:.2s;flex-shrink:0;align-self:flex-start;margin-top:.1rem}.ci-remove:hover{color:#e74c3c}
+.cm-foot{padding:1.2rem 1.5rem;border-top:1px solid #f5f5f5}
+.cm-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.cm-total-row span{font-size:.88rem;color:#999}
+.cm-total-row strong{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900}
+.order-wa-btn{width:100%;background:var(--green);color:#fff;border:none;border-radius:13px;padding:.95rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.6rem;transition:.2s}.order-wa-btn:hover{opacity:.9}
+.clear-cart-btn{width:100%;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:.78rem;color:#ccc;cursor:pointer;margin-top:.6rem;padding:.35rem;transition:.2s}.clear-cart-btn:hover{color:#e74c3c}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(70px);background:#111;color:#fff;border-radius:50px;padding:.6rem 1.6rem;font-size:.83rem;font-weight:500;z-index:9999;opacity:0;transition:.3s;white-space:nowrap;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ADDED ANIMATION on card */
+.prod-card.just-added{animation:flash .4s ease}
+@keyframes flash{0%{box-shadow:0 0 0 0 rgba(232,197,71,.8)}100%{box-shadow:0 0 0 14px rgba(232,197,71,0)}}
+
+@media(max-width:900px){.shop-layout{grid-template-columns:1fr}.sidebar{position:relative;top:0;height:auto;display:flex;flex-wrap:wrap;gap:.5rem;padding:1rem;border-right:none;border-bottom:1px solid #efefef}.cat-section{margin-bottom:0}.sub-list{position:absolute;z-index:100;background:#fff;border:1.5px solid #efefef;border-radius:12px;padding:.6rem;min-width:160px;box-shadow:var(--sh)}.sidebar h3{width:100%;margin-bottom:.5rem}.main{padding:1.2rem}}
+@media(max-width:600px){.prod-grid{grid-template-columns:1fr 1fr}}
+/* PAGINATION */
+.pagination-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding:2rem 0 1rem;border-top:1px solid #efefef;margin-top:1.5rem}
+.pg-info{font-size:.8rem;color:#aaa}
+.pg-btns{display:flex;gap:.4rem;flex-wrap:wrap}
+.pg-btn{display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:36px;padding:0 .8rem;border-radius:10px;border:1.5px solid #e8e8e8;background:#fff;color:#555;font-size:.82rem;font-weight:600;text-decoration:none;transition:.2s;cursor:pointer}
+.pg-btn:hover:not(.disabled):not(.active){border-color:#111;color:#111}
+.pg-btn.active{background:#111;color:#fff;border-color:#111}
+.pg-btn.disabled{opacity:.35;cursor:not-allowed}
+
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/">DUDE <em>FASHION</em></a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/shop/" class="active">Shop</a></li>
+    <li><a href="/#about">About</a></li>
+    <li><a href="/contact/">Contact</a></li>
+  </ul>
+  <button class="bag-btn" id="bagBtn" onclick="openCart()">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    Bag <span class="bag-count" id="bagCount">0</span>
+  </button>
+</nav>
+
+<div class="shop-layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <h3>🛍️ Categories</h3>
+    <a class="cat-head {% if not cat_filter %}active{% endif %}" href="/shop/" style="text-decoration:none;display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem">
+      <span class="cat-head-name">🏷️ All Products</span>
+    </a>
+    {% for cat, subs in cat_subs.items %}
+    <div class="cat-section">
+      <a class="cat-head {% if cat_filter == cat %}active{% endif %}" href="?cat={{ cat|urlencode }}&page=1" style="text-decoration:none;display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem">
+        <span class="cat-head-name">
+          {% if cat == "Shirts" %}👔{% elif cat == "T-Shirts" %}👕{% elif cat == "Jeans & Pants" %}👖{% elif cat == "Shorts & Inners" %}🩲{% else %}🧥{% endif %}
+          {{ cat }}
+        </span>
+      </a>
+    </div>
+    {% endfor %}
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <div class="shop-header">
+      <div>
+        <h1 id="shopTitle">All Products</h1>
+        <div class="result-count" id="resultCount">Showing {{ total_count }} item{{ total_count|pluralize }} &nbsp;·&nbsp; Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</div>
+      </div>
+      <select class="sort-sel" onchange="navigateSort(this.value)">
+        <option value="" {% if not sort_by %}selected{% endif %}>Sort: Default</option>
+        <option value="low" {% if sort_by == "low" %}selected{% endif %}>Price: Low to High</option>
+        <option value="high" {% if sort_by == "high" %}selected{% endif %}>Price: High to Low</option>
+        <option value="off" {% if sort_by == "off" %}selected{% endif %}>Biggest Discount</option>
+      </select>
+    </div>
+
+    <div class="prod-grid" id="prodGrid">
+      {% for p in products %}
+      <div class="prod-card" data-id="{{ p.id }}" data-cat="{{ p.cat }}" data-sub="{{ p.sub }}" data-price="{{ p.price }}" data-off="{{ p.off }}">
+        <div class="prod-img">
+          <img src="{{ p.img }}" alt="{{ p.name }}" loading="lazy"
+               onerror="this.src='https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=100'"/>
+          <div class="badge {{ p.badge_class }}">{{ p.badge }}</div>
+          <div class="prod-actions">
+            <select id="size-{{ p.id }}" style="border:none;border-radius:9px;padding:.4rem;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.95);cursor:pointer;outline:none;">
+              <option value="S">S</option><option value="M" selected>M</option><option value="L">L</option><option value="XL">XL</option><option value="XXL">XXL</option>
+            </select>
+            <button class="btn-add" onclick="addItem({{ p.id }})">+ Bag</button>
+            <a href="https://wa.me/{{ wa }}?text=Hi%20DUDE%20FASHION!%20Enquiry%3A%20{{ p.name|urlencode }}%20%E2%82%B9{{ p.price }}" target="_blank" class="btn-wa-q">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="prod-info">
+          <h4>{{ p.name }}</h4>
+          <div class="pricing">
+            <span class="p-now">₹{{ p.price }}</span>
+            <span class="p-old">₹{{ p.orig }}</span>
+            <span class="p-off">{{ p.off }}% off</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="empty" id="emptyState" style="display:none">
+      <div>😕</div>
+      <p>No products found in this category.<br>Try a different filter!</p>
+    </div>
+
+    <!-- PAGINATION -->
+    {% if page_obj.paginator.num_pages > 1 %}
+    <div class="pagination-bar" id="paginationBar">
+      <span class="pg-info">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        &nbsp;·&nbsp; {{ total_count }} items
+      </span>
+      <div class="pg-btns">
+        {% if page_obj.has_previous %}
+          <a class="pg-btn" href="?page={{ page_obj.previous_page_number }}{% if cat_filter %}&cat={{ cat_filter }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}">‹ Prev</a>
+        {% else %}
+          <span class="pg-btn disabled">‹ Prev</span>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+          {% if num == page_obj.number %}
+            <span class="pg-btn active">{{ num }}</span>
+          {% elif num >= page_obj.number|add:"-2" and num <= page_obj.number|add:"2" %}
+            <a class="pg-btn" href="?page={{ num }}{% if cat_filter %}&cat={{ cat_filter }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <a class="pg-btn" href="?page={{ page_obj.next_page_number }}{% if cat_filter %}&cat={{ cat_filter }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}">Next ›</a>
+        {% else %}
+          <span class="pg-btn disabled">Next ›</span>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+
+  </main>
+</div>
+
+<!-- CART POPUP -->
+<div class="cart-overlay" id="cartOverlay" onclick="overlayClick(event)">
+  <div class="cart-modal" id="cartModal">
+    <div class="cm-head">
+      <h3>🛍️ Your Bag</h3>
+      <button class="cm-close" onclick="closeCart()">✕</button>
+    </div>
+    <div class="cm-body" id="cmBody">
+      <div class="cm-empty"><div>🛍️</div><p>Your bag is empty.<br>Start adding great fits!</p></div>
+    </div>
+    <div class="cm-foot" id="cmFoot" style="display:none">
+      <div style="margin-bottom:1.2rem;">
+        <label style="font-size:0.8rem; font-weight:700; display:block; margin-bottom:0.4rem; color:#555;">📍 Delivery Address:</label>
+        <textarea id="orderAddress" placeholder="Enter your full door no, street name, and city..." style="width:100%; border:1.5px solid #eaeaea; border-radius:10px; padding:0.8rem; font-family:'DM Sans', sans-serif; font-size:0.85rem; resize:vertical; min-height:75px; outline:none;"></textarea>
+      </div>
+      <div class="cm-total-row"><span>Total</span><strong id="cmTotal">₹0</strong></div>
+      <button class="order-wa-btn" onclick="orderWA()">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Order on WhatsApp
+      </button>
+      <button class="clear-cart-btn" onclick="clearCart()">🗑️ Clear bag</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const WA = '{{ wa }}';
+
+// ── Product data from Django (ALL products for cart lookup) ──
+const PRODUCTS = [
+  {% for p in all_products %}
+  {id:{{ p.id }},name:"{{ p.name }}",cat:"{{ p.cat }}",sub:"{{ p.sub }}",price:{{ p.price }},orig:{{ p.orig }},badge:"{{ p.badge }}",off:{{ p.off }},img:"{{ p.img }}"},
+  {% endfor %}
+];
+
+
+let cart = JSON.parse(localStorage.getItem('dude_cart') || '[]');
+
+// ── SIDEBAR ACCORDION (server-side nav) ────────────────────
+function toggleCat(head, catName) {
+  const section = head.closest('.cat-section');
+  const subList = section.querySelector('.sub-list');
+  const isOpen  = subList.classList.contains('open');
+
+  document.querySelectorAll('.sub-list').forEach(l => l.classList.remove('open'));
+  document.querySelectorAll('.cat-head').forEach(h => h.classList.remove('open'));
+
+  if (!isOpen) {
+    subList.classList.add('open');
+    head.classList.add('open');
+  }
+}
+
+// Sort: navigate with current filters preserved
+function navigateSort(sortVal) {
+  const params = new URLSearchParams(window.location.search);
+  if (sortVal) params.set('sort', sortVal); else params.delete('sort');
+  params.set('page','1');
+  window.location.search = params.toString();
+}
+
+// Auto-open active cat section on page load
+document.addEventListener('DOMContentLoaded', function() {
+  const activeSubBtn = document.querySelector('.sub-btn.active');
+  if (activeSubBtn) {
+    const section = activeSubBtn.closest('.cat-section');
+    if (section) {
+      section.querySelector('.sub-list').classList.add('open');
+      section.querySelector('.cat-head').classList.add('open');
+    }
+  }
+  const activeHead = document.querySelector('.cat-head.active');
+  if (activeHead && !activeSubBtn) {
+    const section = activeHead.closest('.cat-section');
+    section.querySelector('.sub-list').classList.add('open');
+  }
+});
+
+// ── CART ────────────────────────────────────────────────────
+function saveCart() { localStorage.setItem('dude_cart', JSON.stringify(cart)); }
+
+function addItem(id) {
+  const sizeEl = document.getElementById('size-' + id);
+  const size = sizeEl ? sizeEl.value : 'N/A';
+  const p = PRODUCTS.find(x=>x.id===id);
+  const ex = cart.find(x=>x.id===id && x.size===size);
+  if (ex) ex.qty++; else cart.push({...p, qty:1, size:size});
+  saveCart();
+  updateBadge();
+  renderCart();
+  // Flash card
+  const card = document.querySelector(`.prod-card[data-id="${id}"]`);
+  if (card) { card.classList.remove('just-added'); void card.offsetWidth; card.classList.add('just-added'); }
+  showToast('✓ ' + p.name + ' (' + size + ') added to bag');
+}
+
+function removeItem(id, size) { cart = cart.filter(x => !(x.id===id && x.size===size)); saveCart(); updateBadge(); renderCart(); }
+
+function changeQty(id, size, d) {
+  const i = cart.find(x=>x.id===id && x.size===size); if(!i) return;
+  i.qty += d;
+  if (i.qty <= 0) { removeItem(id, size); return; }
+  saveCart(); updateBadge(); renderCart();
+}
+
+function clearCart() { cart = []; saveCart(); updateBadge(); renderCart(); }
+
+function updateBadge() {
+  const count = cart.reduce((s,i)=>s+i.qty,0);
+  const el = document.getElementById('bagCount');
+  el.textContent = count;
+  el.classList.toggle('on', count > 0);
+}
+
+function renderCart() {
+  const body = document.getElementById('cmBody');
+  const foot = document.getElementById('cmFoot');
+  const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+  document.getElementById('cmTotal').textContent = '₹' + total.toLocaleString('en-IN');
+  if (cart.length === 0) {
+    body.innerHTML = '<div class="cm-empty"><div>🛍️</div><p>Your bag is empty.<br>Start adding great fits!</p></div>';
+    foot.style.display = 'none';
+  } else {
+    foot.style.display = 'block';
+    body.innerHTML = cart.map(i => `
+      <div class="ci">
+        <div class="ci-img"><img src="${i.img}" alt="${i.name}" onerror="this.src='https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=400&q=100'"/></div>
+        <div class="ci-info">
+          <div class="ci-sub">${i.sub} • Size: ${i.size}</div>
+          <div class="ci-name">${i.name}</div>
+          <div class="ci-price">₹${(i.price*i.qty).toLocaleString('en-IN')}</div>
+          <div class="ci-qty">
+            <button class="q-btn" onclick="changeQty(${i.id},'${i.size}',-1)">−</button>
+            <span class="q-val">${i.qty}</span>
+            <button class="q-btn" onclick="changeQty(${i.id},'${i.size}',1)">+</button>
+          </div>
+        </div>
+        <button class="ci-remove" onclick="removeItem(${i.id},'${i.size}')" title="Remove">✕</button>
+      </div>`).join('');
+  }
+}
+
+function openCart() { document.getElementById('cartOverlay').classList.add('open'); renderCart(); }
+function closeCart() { document.getElementById('cartOverlay').classList.remove('open'); }
+function overlayClick(e) { if(e.target===document.getElementById('cartOverlay')) closeCart(); }
+
+// ── WhatsApp ORDER with images + details ──────────────────
+function orderWA() {
+  if (!cart.length) return;
+  const addrEl = document.getElementById('orderAddress');
+  const addr = addrEl ? addrEl.value.trim() : '';
+  if(!addr) { 
+      alert('Please enter your delivery address to place the order!'); 
+      if(addrEl) addrEl.focus();
+      return; 
+  }
+
+  const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+  let msg = '👋 Hi *DUDE FASHION*!\n\nI\'d like to place an order:\n\n';
+  cart.forEach((i,idx) => {
+    msg += `*${idx+1}. ${i.name}*\n`;
+    msg += `   Category: ${i.cat} › ${i.sub}\n`;
+    msg += `   Size: ${i.size}  |  Qty: ${i.qty}  |  ₹${i.price} each\n`;
+    msg += `   Subtotal: ₹${(i.price*i.qty).toLocaleString('en-IN')}\n`;
+    const absImg = i.img.startsWith('http') ? i.img : (window.location.origin + i.img);
+    msg += `   🖼️ Image: ${absImg}\n\n`;
+  });
+  msg += `━━━━━━━━━━━━━━━\n💰 *Total: ₹${total.toLocaleString('en-IN')}*\n\n📍 *Delivery Address:*\n${addr}\n\nPlease confirm availability & delivery. Thank you! 🙏`;
+  window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'), 2500);
+}
+
+// Init
+updateBadge();
+</script>
+<footer style="background:#111;padding:1.2rem 6%;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #222">
+  <span style="color:rgba(255,255,255,.3);font-size:.75rem">© 2025 DUDE FASHION · Bhimavaram, AP</span>
+  <a href="/panel/" style="color:rgba(255,255,255,.2);text-decoration:none;font-size:.72rem;transition:.2s" onmouseover="this.style.color='rgba(255,255,255,.5)'" onmouseout="this.style.color='rgba(255,255,255,.2)'">⚙️ Manager Login</a>
+</footer>
+</body>
+</html>

@@ -1,0 +1,282 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>DUDE FASHION – Bold Men's Wear | Bhimavaram</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:#fff;color:#111;overflow-x:hidden}
+:root{--accent:#E8C547;--green:#25D366;--r:16px;--sh:0 4px 32px rgba(0,0,0,.08)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:#111;border-radius:3px}
+nav{position:sticky;top:0;z-index:900;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;padding:0 6%;height:66px}
+.logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:#111;text-decoration:none}.logo em{font-style:normal;color:var(--accent)}
+.nav-links{display:flex;gap:2rem;list-style:none}.nav-links a{text-decoration:none;font-size:.88rem;font-weight:500;color:#666;transition:.2s}.nav-links a:hover,.nav-links a.active{color:#111;font-weight:600}
+.btn-dark{background:#111;color:#fff;border:2px solid #111;border-radius:50px;padding:.65rem 1.8rem;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.88rem;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:.2s;cursor:pointer}.btn-dark:hover{background:transparent;color:#111}
+.btn-wa{background:var(--green);color:#fff;border:2px solid var(--green);border-radius:50px;padding:.65rem 1.8rem;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.88rem;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:.2s}.btn-wa:hover{opacity:.85}
+
+/* HERO */
+.hero{display:grid;grid-template-columns:1fr 1fr;min-height:91vh;padding:0 6%;gap:4rem;align-items:center;background:linear-gradient(135deg,#fafafa 0%,#f3f3f3 100%)}
+.hero-pill{display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1.5px solid #e8e8e8;border-radius:50px;padding:.35rem 1rem;font-size:.75rem;font-weight:600;color:#666;margin-bottom:1.8rem;letter-spacing:.05em}
+.dot-live{width:7px;height:7px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(3rem,5.5vw,5rem);font-weight:900;line-height:1.05;letter-spacing:-.03em;margin-bottom:1.4rem}.hero-title .muted{color:#bbb}
+.hero-sub{font-size:1rem;color:#888;line-height:1.75;max-width:420px;margin-bottom:2.5rem}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:3rem}
+.hero-stats{display:flex;gap:2.5rem;padding-top:2.5rem;border-top:1px solid #eee}
+.stat-n{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900}.stat-l{font-size:.75rem;color:#aaa;font-weight:500;margin-top:.1rem}
+.hero-right{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:3rem 0}
+.hi{border-radius:var(--r);overflow:hidden;position:relative}.hi img{width:100%;height:100%;object-fit:cover;display:block}
+.hi:nth-child(1){aspect-ratio:3/4}.hi:nth-child(2){aspect-ratio:3/4}.hi:nth-child(3){grid-column:span 2;aspect-ratio:16/7}
+.hi-label{position:absolute;bottom:10px;left:10px;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border-radius:50px;padding:.28rem .8rem;font-size:.7rem;font-weight:700;color:#111}
+
+/* MARQUEE */
+.marquee{background:#111;overflow:hidden;padding:.65rem 0;border-top:1px solid #222}
+.mq-inner{display:flex;gap:3rem;white-space:nowrap;animation:mq 24s linear infinite}
+.mq-inner span{font-size:.72rem;font-weight:600;letter-spacing:.12em;color:rgba(255,255,255,.55);text-transform:uppercase}
+.mq-inner .dot{color:var(--accent)}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* CATEGORIES SECTION */
+section{padding:5rem 6%}
+.sec-tag{display:block;font-size:.68rem;font-weight:700;letter-spacing:.15em;color:#aaa;text-transform:uppercase;margin-bottom:.5rem}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;letter-spacing:-.02em;line-height:1.1;margin-bottom:.5rem}
+.sec-sub{font-size:.92rem;color:#999;line-height:1.6;margin-bottom:2.5rem}
+.cat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.cat-card{border-radius:var(--r);overflow:hidden;position:relative;cursor:pointer;text-decoration:none;display:block}
+.cat-card img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;transition:.5s}
+.cat-card:hover img{transform:scale(1.06)}
+.cat-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 50%);display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem}
+.cat-name{font-family:'Playfair Display',serif;color:#fff;font-size:1.1rem;font-weight:700}
+.cat-count{color:rgba(255,255,255,.65);font-size:.72rem;margin-top:.2rem}
+.cat-arrow{display:inline-block;margin-top:.5rem;background:var(--accent);color:#111;border-radius:50px;padding:.18rem .65rem;font-size:.68rem;font-weight:700}
+
+/* VIBES */
+.vibes-bg{background:#fafafa}
+.vibe-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.vibe-card{border:1.5px solid #efefef;border-radius:var(--r);padding:1.8rem 1.5rem;cursor:pointer;transition:.25s;background:#fff;text-decoration:none;display:block}
+.vibe-card:hover{border-color:#111;transform:translateY(-3px);box-shadow:var(--sh)}
+.ve{font-size:2rem;margin-bottom:1rem}
+.vibe-card h3{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;margin-bottom:.35rem;color:#111}
+.vibe-card p{font-size:.82rem;color:#999;line-height:1.6}
+.v-arr{margin-top:1.2rem;font-size:.8rem;font-weight:600;color:#ccc;transition:.2s}.vibe-card:hover .v-arr{color:#111}
+
+/* OFFER */
+.offer{background:#111;padding:4.5rem 6%;display:grid;grid-template-columns:1fr auto;gap:4rem;align-items:center}
+.offer .sec-tag{color:rgba(232,197,71,.7)}.offer h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:#fff;line-height:1.05;margin:.7rem 0 .9rem}
+.offer p{color:rgba(255,255,255,.4);font-size:.92rem;margin-bottom:1.6rem}
+.code-box{display:inline-flex;align-items:center;gap:.8rem;background:rgba(232,197,71,.08);border:1.5px dashed rgba(232,197,71,.4);border-radius:10px;padding:.55rem 1.3rem;color:var(--accent);font-weight:700;font-size:.95rem;letter-spacing:.1em;margin-bottom:1.8rem}
+.offer-right{text-align:center;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:2.2rem 2.8rem}
+.off-big{font-family:'Playfair Display',serif;font-size:4.5rem;font-weight:900;color:var(--accent);line-height:1}
+.off-sm{font-size:.7rem;color:rgba(255,255,255,.35);letter-spacing:.12em;display:block;margin-top:.3rem}
+
+/* HOW */
+.steps{display:grid;grid-template-columns:1fr 28px 1fr 28px 1fr;align-items:center;gap:0;margin-bottom:3rem}
+.step{border:1.5px solid #f0f0f0;border-radius:var(--r);padding:1.8rem 1.4rem;text-align:center}
+.s-num{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:#111;color:#fff;font-size:.75rem;font-weight:700;margin-bottom:.8rem}
+.s-icon{font-size:1.8rem;margin-bottom:.6rem}.step h3{font-weight:600;font-size:.9rem;margin-bottom:.3rem}.step p{font-size:.8rem;color:#999;line-height:1.5}
+.step-sep{text-align:center;font-size:1.2rem;color:#ddd}
+
+/* TESTIMONIALS */
+.testi-bg{background:#fafafa}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.t-card{background:#fff;border-radius:var(--r);padding:1.6rem;border:1.5px solid #f0f0f0;position:relative}
+.qq{font-family:'Playfair Display',serif;font-size:3.5rem;color:#f0f0f0;position:absolute;top:.3rem;right:1rem;line-height:1}
+.stars{color:var(--accent);font-size:.82rem;margin-bottom:.7rem}
+.t-card p{font-size:.85rem;line-height:1.7;color:#666;margin-bottom:1rem}
+.rev{display:flex;align-items:center;gap:.7rem}
+.av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:.95rem;flex-shrink:0}
+.av-d{background:#111;color:#fff}.av-y{background:var(--accent);color:#111}.av-b{background:#3498db;color:#fff}
+.rev strong{font-size:.85rem;font-weight:600;display:block}.rev span{font-size:.72rem;color:#bbb}
+
+/* FOOTER */
+footer{background:#111;color:rgba(255,255,255,.5);padding:3.5rem 6% 2rem}
+.fg{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:2.5rem}
+.fl{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:900;color:#fff;display:block;margin-bottom:.8rem;text-decoration:none}.fl em{font-style:normal;color:var(--accent)}
+.fa{font-size:.83rem;line-height:1.7;margin-bottom:1.4rem}
+.fc h4{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.9rem}
+.fc a{display:block;font-size:.82rem;color:rgba(255,255,255,.5);text-decoration:none;margin-bottom:.45rem;transition:.2s}.fc a:hover{color:#fff}
+.fb{border-top:1px solid rgba(255,255,255,.08);padding-top:1.4rem;display:flex;justify-content:space-between;font-size:.75rem}
+
+@media(max-width:1100px){.cat-grid{grid-template-columns:repeat(3,1fr)}.vibe-grid{grid-template-columns:1fr 1fr}.fg{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.hero{grid-template-columns:1fr;min-height:auto;padding-top:3rem;gap:2rem}.hero-right{display:none}.testi-grid{grid-template-columns:1fr}.steps{grid-template-columns:1fr;gap:1rem}.step-sep{display:none}.offer{grid-template-columns:1fr}.offer-right{display:none}.nav-links{display:none}.cat-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.vibe-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/">DUDE <em>FASHION</em></a>
+  <ul class="nav-links">
+    <li><a href="/" class="active">Home</a></li>
+    <li><a href="/shop/">Shop</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="/contact/">Contact</a></li>
+  </ul>
+  <a href="/shop/" class="btn-dark">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    Shop Now
+  </a>
+</nav>
+
+<section class="hero" id="home">
+  <div>
+    <div class="hero-pill"><span class="dot-live"></span> Open Now · Bhimavaram, AP</div>
+    <h1 class="hero-title">Dress Like<br><span class="muted">A Dude.</span></h1>
+    <p class="hero-sub">Premium men's fashion — Shirts, T-Shirts, Jeans, Shorts, Hoodies & more. Every look, every occasion, all under one roof in Bhimavaram.</p>
+    <div class="hero-btns">
+      <a href="/shop/" class="btn-dark">Browse Collection</a>
+      <a href="https://wa.me/{{ shop.wa_number }}?text=Hi%20DUDE%20FASHION!" target="_blank" class="btn-wa">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Chat with Us
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-n">500+</div><div class="stat-l">Products</div></div>
+      <div><div class="stat-n">5K+</div><div class="stat-l">Customers</div></div>
+      <div><div class="stat-n">{{ shop.rating }}★</div><div class="stat-l">Google Rating</div></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hi"><img src="{% static 'shop/img/download__16_.jpeg' %}" alt="Hoodie"/><div class="hi-label">Hoodies</div></div>
+    <div class="hi"><img src="{% static 'shop/img/s5.jpeg' %}" alt="Shorts"/><div class="hi-label">Shorts</div></div>
+    <div class="hi"><img src="{% static 'shop/img/download__18_.jpeg' %}" alt="Hoodies"/><div class="hi-label">New Arrivals</div></div>
+  </div>
+</section>
+
+<div class="marquee"><div class="mq-inner">
+  <span>Shirts</span><span class="dot">·</span><span>T-Shirts</span><span class="dot">·</span><span>Jeans &amp; Pants</span><span class="dot">·</span><span>Shorts</span><span class="dot">·</span><span>Inners</span><span class="dot">·</span><span>Hoodies</span><span class="dot">·</span><span>Blazers</span><span class="dot">·</span><span>100% Men's Wear</span><span class="dot">·</span><span>Bhimavaram AP</span><span class="dot">·</span>
+  <span>Shirts</span><span class="dot">·</span><span>T-Shirts</span><span class="dot">·</span><span>Jeans &amp; Pants</span><span class="dot">·</span><span>Shorts</span><span class="dot">·</span><span>Inners</span><span class="dot">·</span><span>Hoodies</span><span class="dot">·</span><span>Blazers</span><span class="dot">·</span><span>100% Men's Wear</span><span class="dot">·</span><span>Bhimavaram AP</span><span class="dot">·</span>
+</div></div>
+
+<section>
+  <span class="sec-tag">Shop by Category</span>
+  <h2 class="sec-title">What are you looking for?</h2>
+  <p class="sec-sub">100% Men's Wear — tap any category to explore</p>
+  <div class="cat-grid">
+    <a href="/shop/?cat=Shirts" class="cat-card">
+      <img src="{% static 'shop/img/download__3_.jpeg' %}" alt="Shirts"/>
+      <div class="cat-overlay"><div class="cat-name">Shirts</div><div class="cat-count">Formal · Casual · Party</div><div class="cat-arrow">Explore →</div></div>
+    </a>
+    <a href="/shop/?cat=T-Shirts" class="cat-card">
+      <img src="{% static 'shop/img/download__15_.jpeg' %}" alt="T-Shirts"/>
+      <div class="cat-overlay"><div class="cat-name">T-Shirts</div><div class="cat-count">Polo · Graphic · Plain · Printed</div><div class="cat-arrow">Explore →</div></div>
+    </a>
+    <a href="/shop/?cat=Jeans+%26+Pants" class="cat-card">
+      <img src="{% static 'shop/img/download__7_.jpeg' %}" alt="Jeans"/>
+      <div class="cat-overlay"><div class="cat-name">Jeans &amp; Pants</div><div class="cat-count">Jeans · Chinos · Joggers</div><div class="cat-arrow">Explore →</div></div>
+    </a>
+    <a href="/shop/?cat=Shorts+%26+Inners" class="cat-card">
+      <img src="{% static 'shop/img/s9.jpeg' %}" alt="Shorts"/>
+      <div class="cat-overlay"><div class="cat-name">Shorts &amp; Inners</div><div class="cat-count">Cargo · Athletic · Boxers · Vests</div><div class="cat-arrow">Explore →</div></div>
+    </a>
+    <a href="/shop/?cat=Hoodies+%26+Jackets" class="cat-card">
+      <img src="{% static 'shop/img/download__22_.jpeg' %}" alt="Hoodies"/>
+      <div class="cat-overlay"><div class="cat-name">Hoodies &amp; Jackets</div><div class="cat-count">Hoodies · Jackets · Blazers</div><div class="cat-arrow">Explore →</div></div>
+    </a>
+  </div>
+</section>
+
+<section class="vibes-bg">
+  <span class="sec-tag">Pick Your Vibe</span>
+  <h2 class="sec-title">Every Style. Every Dude.</h2>
+  <p class="sec-sub">We have the perfect fit for every version of you</p>
+  <div class="vibe-grid">
+    <a href="/shop/?cat=Shirts" class="vibe-card"><div class="ve">👔</div><h3>Office Ready</h3><p>Formal shirts, chinos & blazers — dress sharp for every meeting.</p><div class="v-arr">Shop →</div></a>
+    <a href="/shop/?cat=T-Shirts" class="vibe-card"><div class="ve">🧢</div><h3>Street Drip</h3><p>Oversized tees, cargo pants, hoodies — raw urban energy.</p><div class="v-arr">Shop →</div></a>
+    <a href="/shop/?cat=Shirts" class="vibe-card"><div class="ve">🕺</div><h3>Party Mode</h3><p>Satin shirts, printed sets, Cuban shirts — for nights out.</p><div class="v-arr">Shop →</div></a>
+    <a href="/shop/?cat=Jeans+%26+Pants" class="vibe-card"><div class="ve">🏃</div><h3>Gym & Chill</h3><p>Track pants, athletic shorts, gym vests — comfort first.</p><div class="v-arr">Shop →</div></a>
+  </div>
+</section>
+
+<section class="offer" id="offers-section" style="display:block;padding:3rem 6%">
+  <div style="text-align:center;margin-bottom:1.5rem">
+    <span class="sec-tag" style="color:rgba(232,197,71,.7)">Limited Time</span>
+    <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:900;color:#fff;margin-top:.3rem">Current Offers &amp; Deals</h2>
+  </div>
+  {% if offers %}
+  <div class="offers-list">
+    {% for o in offers %}
+    <div class="offer-item" style="margin-bottom:1.5rem; padding-bottom:1.5rem; {% if not forloop.last %}border-bottom:1px solid rgba(255,255,255,.07);{% endif %}">
+      <div class="offer-item-inner">
+        <div>
+          <div style="display:inline-block;background:rgba(232,197,71,.15);border:1px solid rgba(232,197,71,.3);border-radius:50px;padding:.2rem .7rem;font-size:.65rem;font-weight:700;letter-spacing:.1em;color:#E8C547;margin-bottom:0.7rem">🔥 LIVE DEAL</div>
+          <h3 style="font-family:'Playfair Display',serif;font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:.5rem">{{ o.title }}</h3>
+          <p style="color:rgba(255,255,255,.45);font-size:.85rem;margin-bottom:1rem">{% if o.subtitle %}{{ o.subtitle }}{% else %}Walk in to our store in Bhimavaram &amp; mention this code at checkout.{% endif %}</p>
+          {% if o.code %}<div class="code-box" style="margin-bottom:1rem; padding:.4rem 1rem; font-size:.85rem;">CODE: <strong>{{ o.code }}</strong></div>{% endif %}
+          <a href="https://wa.me/{{ shop.wa_number }}?text=Hi!%20I%20want%20the%20{{ o.code|default:'this' }}%20offer." target="_blank" class="btn-wa" style="padding:.5rem 1.2rem; font-size:.8rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Claim on WhatsApp
+          </a>
+        </div>
+        <div class="offer-right"><div class="off-big">{{ o.discount }}</div><span class="off-sm">{{ o.title|upper }}</span></div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="offer-item-inner">
+    <div>
+      <div style="display:inline-block;background:rgba(232,197,71,.15);border:1px solid rgba(232,197,71,.3);border-radius:50px;padding:.3rem .9rem;font-size:.7rem;font-weight:700;letter-spacing:.1em;color:#E8C547;margin-bottom:1rem">🔥 LIVE DEAL</div>
+      <h3 style="font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:.8rem">Flat 20% Off Your First Order</h3>
+      <p style="color:rgba(255,255,255,.45);font-size:.92rem;margin-bottom:1.4rem">Walk in to our store in Bhimavaram &amp; mention this code at checkout.</p>
+      <div class="code-box" style="margin-bottom:1.6rem">CODE: <strong>DUDE20</strong></div>
+      <a href="https://wa.me/{{ shop.wa_number }}?text=Hi!%20I%20want%20the%20DUDE20%20offer." target="_blank" class="btn-wa">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Claim on WhatsApp
+      </a>
+    </div>
+    <div class="offer-right"><div class="off-big">20%</div><span class="off-sm">OFF FIRST ORDER</span></div>
+  </div>
+  {% endif %}
+</section>
+<style>
+.offer-item-inner{display:grid;grid-template-columns:1fr auto;gap:4rem;align-items:center}
+@media(max-width:768px){.offer-item-inner{grid-template-columns:1fr}.offer-right{display:none}}
+</style>
+
+<section>
+  <span class="sec-tag">Easy Ordering</span>
+  <h2 class="sec-title">How to Order</h2>
+  <p class="sec-sub">3 simple steps to get your fit</p>
+  <div class="steps">
+    <div class="step"><div class="s-num">01</div><div class="s-icon">👀</div><h3>Browse & Pick</h3><p>Explore our shop page, filter by category and add items to your bag.</p></div>
+    <div class="step-sep">→</div>
+    <div class="step"><div class="s-num">02</div><div class="s-icon">💬</div><h3>Send via WhatsApp</h3><p>Hit "Order on WhatsApp" — your full bag with images auto-sends to us.</p></div>
+    <div class="step-sep">→</div>
+    <div class="step"><div class="s-num">03</div><div class="s-icon">🏪</div><h3>Visit & Grab</h3><p>Come to Sivaraopeta, Bhimavaram, try it on and leave looking amazing.</p></div>
+  </div>
+  <div style="text-align:center"><a href="/shop/" class="btn-dark">Start Shopping</a></div>
+</section>
+
+<section class="testi-bg">
+  <span class="sec-tag">Reviews</span>
+  <h2 class="sec-title">What Dudes Say</h2>
+  <p class="sec-sub">Real customers · {{ shop.rating }}★ on Google</p>
+  <div class="testi-grid">
+    <div class="t-card"><div class="qq">"</div><div class="stars">★★★★★</div><p>Affordable prices and a great choice for my selection. Quality is amazing for the price!</p><div class="rev"><div class="av av-d">R</div><div><strong>Ravi Kumar</strong><span>Bhimavaram, AP</span></div></div></div>
+    <div class="t-card"><div class="qq">"</div><div class="stars">★★★★★</div><p>Good products at reasonable prices. Best men's fashion store in Bhimavaram. Highly recommended!</p><div class="rev"><div class="av av-y">A</div><div><strong>Aditya Sai</strong><span>Bhimavaram, AP</span></div></div></div>
+    <div class="t-card"><div class="qq">"</div><div class="stars">★★★★★</div><p>Ordered via WhatsApp — super smooth. The blazer fits perfectly. Definitely coming back!</p><div class="rev"><div class="av av-b">K</div><div><strong>Karthik Reddy</strong><span>Andhra Pradesh</span></div></div></div>
+  </div>
+</section>
+
+<footer id="about">
+  <div class="fg">
+    <div>
+      <a class="fl" href="/">DUDE <em>FASHION</em></a>
+      <p class="fa">Premium men's fashion — Shirts, T-Shirts, Jeans, Shorts, Inners, Hoodies & Blazers. All under one roof in Bhimavaram, AP.</p>
+      <a href="https://wa.me/{{ shop.wa_number }}" target="_blank" class="btn-wa" style="font-size:.8rem;padding:.45rem 1.2rem">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp Us
+      </a>
+    </div>
+    <div class="fc"><h4>Shop</h4><a href="/shop/?cat=Shirts">Shirts</a><a href="/shop/?cat=T-Shirts">T-Shirts</a><a href="/shop/?cat=Jeans+%26+Pants">Jeans &amp; Pants</a><a href="/shop/?cat=Shorts+%26+Inners">Shorts &amp; Inners</a><a href="/shop/?cat=Hoodies+%26+Jackets">Hoodies &amp; Jackets</a></div>
+    <div class="fc"><h4>Visit Us</h4><a href="{{ shop.maps_url }}" target="_blank">📍 Sivaraopeta, Tammi Raju Nagar</a><a href="{{ shop.maps_url }}" target="_blank">🏙️ Bhimavaram AP 534202</a><a href="#">🕐 {{ shop.hours }}</a><a href="{{ shop.maps_url }}" target="_blank">🗺️ Get Directions</a></div>
+    <div class="fc"><h4>Contact</h4><a href="tel:{{ shop.phone }}">📞 {{ shop.phone }}</a><a href="https://wa.me/{{ shop.wa_number }}" target="_blank">💬 WhatsApp</a><a href="/">🏠 Home</a><a href="/shop/">🛍️ Shop</a></div>
+  </div>
+  <div class="fb">
+    <span>© 2025 DUDE FASHION. All rights reserved.</span>
+    <span>Made with ❤️ in Bhimavaram, AP</span>
+    <a href="/panel/" style="display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,.5);text-decoration:none;font-size:.78rem;font-weight:600;border:1px solid rgba(255,255,255,.2);border-radius:50px;padding:5px 14px;transition:.2s" onmouseover="this.style.color='#E8C547';this.style.borderColor='rgba(232,197,71,.5)'" onmouseout="this.style.color='rgba(255,255,255,.5)';this.style.borderColor='rgba(255,255,255,.2)'">⚙️ Manager Login</a>
+  </div>
+</footer>
+</body>
+</html>
