@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
+from django.http import Http404
 from .models import Product, Offer
 
 WA_NUMBER = '919381473698'
@@ -197,5 +198,40 @@ def contact_view(request):
     return render(request, 'shop/contact.html', {
         'shop': SHOP_INFO,
         'wa': WA_NUMBER,
+    })
+
+
+def product_detail(request, pk):
+    """Detail view for a product to support OG meta tags for WhatsApp previews."""
+    product = None
+    try:
+        # 1. Try DB first
+        p_obj = Product.objects.filter(pk=pk, active=True).first()
+        if p_obj:
+            product = {
+                'id':          p_obj.pk,
+                'name':        p_obj.name,
+                'cat':         p_obj.category,
+                'sub':         p_obj.sub,
+                'price':       p_obj.price,
+                'orig':        p_obj.orig,
+                'badge':       p_obj.badge,
+                'off':         p_obj.off,
+                'badge_class': p_obj.badge_class,
+                'img':         p_obj.img_src,
+            }
+        else:
+            # 2. Try Fallback if not in DB
+            product = next((p for p in FALLBACK_PRODUCTS if p['id'] == pk), None)
+    except Exception:
+        pass
+
+    if not product:
+        raise Http404("Product not found")
+
+    return render(request, 'shop/product_detail.html', {
+        'product': product,
+        'shop':    SHOP_INFO,
+        'wa':      WA_NUMBER,
     })
 

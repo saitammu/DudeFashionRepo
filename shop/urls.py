@@ -5,6 +5,7 @@ from . import panel_views
 urlpatterns = [
     path('', views.index, name='index'),
     path('shop/', views.shop_view, name='shop'),
+    path('product/<int:pk>/', views.product_detail, name='product_detail'),
     path('contact/', views.contact_view, name='contact'),
 
     # ── Manager Panel ──────────────────────────────────────
