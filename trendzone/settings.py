@@ -57,6 +57,12 @@ STORAGES = {
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
+# Prevent Django from scanning app static dirs twice (already covered by AppDirectoriesFinder)
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -87,7 +93,6 @@ DATABASES = {
 }
 
 STATIC_URL  = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'shop' / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL   = '/media/'
