@@ -23,7 +23,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cloudinary',
     'shop',
-    'whitenoise.runserver_nostatic',
 ]
 
 CLOUDINARY_STORAGE = {
@@ -44,18 +43,20 @@ cloudinary.config(
 )
 
 # Storage configuration for Django 4.2+
+# - default: Cloudinary handles all media/product image uploads
+# - staticfiles: plain StaticFilesStorage so collectstatic just copies files cleanly.
+#   WhiteNoiseMiddleware in MIDDLEWARE handles compression/serving at runtime.
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
 
-# Legacy settings for compatibility with older apps (like django-cloudinary-storage)
+# Legacy setting for compatibility with django-cloudinary-storage
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # Prevent Django from scanning app static dirs twice (already covered by AppDirectoriesFinder)
 STATICFILES_FINDERS = [
