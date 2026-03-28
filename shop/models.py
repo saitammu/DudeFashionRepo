@@ -1,4 +1,5 @@
 from django.db import models
+from cloudinary.models import CloudinaryField
 
 BADGE_CHOICES = [('HOT','HOT'),('NEW','NEW'),('SALE','SALE')]
 CATEGORY_CHOICES = [
@@ -16,7 +17,7 @@ class Product(models.Model):
     price    = models.PositiveIntegerField(help_text='Selling price in ₹')
     orig     = models.PositiveIntegerField(help_text='Original/MRP price in ₹')
     badge    = models.CharField(max_length=10, choices=BADGE_CHOICES, default='NEW')
-    image    = models.ImageField(upload_to='products/', blank=True, null=True)
+    image    = CloudinaryField('image', folder='products', blank=True, null=True)
     image_url= models.URLField(blank=True, help_text='Use URL if no file uploaded')
     active   = models.BooleanField(default=True)
     order    = models.PositiveIntegerField(default=0, help_text='Display order (lower = first)')
@@ -32,8 +33,12 @@ class Product(models.Model):
 
     @property
     def img_src(self):
-        if self.image:
-            return self.image.url
+        try:
+            if self.image:
+                return self.image.url
+        except Exception as e:
+            # Handle cases where Cloudinary is not properly configured
+            pass
         if self.image_url:
             return self.image_url
         return 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80'

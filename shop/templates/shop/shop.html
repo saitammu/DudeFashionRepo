@@ -315,14 +315,19 @@ document.addEventListener('DOMContentLoaded', function() {
   if (activeSubBtn) {
     const section = activeSubBtn.closest('.cat-section');
     if (section) {
-      section.querySelector('.sub-list').classList.add('open');
-      section.querySelector('.cat-head').classList.add('open');
+      const subList = section.querySelector('.sub-list');
+      const catHead = section.querySelector('.cat-head');
+      if (subList) subList.classList.add('open');
+      if (catHead) catHead.classList.add('open');
     }
   }
   const activeHead = document.querySelector('.cat-head.active');
   if (activeHead && !activeSubBtn) {
     const section = activeHead.closest('.cat-section');
-    section.querySelector('.sub-list').classList.add('open');
+    if (section) {
+      const subList = section.querySelector('.sub-list');
+      if (subList) subList.classList.add('open');
+    }
   }
 });
 
