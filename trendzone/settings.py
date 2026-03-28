@@ -19,8 +19,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.staticfiles',  # must come BEFORE cloudinary_storage
     'cloudinary_storage',
-    'django.contrib.staticfiles',
     'cloudinary',
     'shop',
 ]
@@ -55,8 +55,10 @@ STORAGES = {
     },
 }
 
-# Legacy setting for compatibility with django-cloudinary-storage
+# These legacy settings are required by django-cloudinary-storage (v0.3.0)
+# which still reads them directly from settings instead of using STORAGES dict.
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # Prevent Django from scanning app static dirs twice (already covered by AppDirectoriesFinder)
 STATICFILES_FINDERS = [
