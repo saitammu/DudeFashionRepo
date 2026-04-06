@@ -8,9 +8,7 @@ import cloudinary.api
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-dudefashion-change-in-production')
-
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
-
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
 INSTALLED_APPS = [
@@ -19,7 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',  # must come BEFORE cloudinary_storage
+    'django.contrib.staticfiles',
     'cloudinary_storage',
     'cloudinary',
     'shop',
@@ -31,10 +29,8 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', '187eJXqOViWs6zEGw8EBABGy594'),
 }
 
-# Set the CLOUDINARY_URL environment variable for the cloudinary library
 os.environ['CLOUDINARY_URL'] = f"cloudinary://{CLOUDINARY_STORAGE['API_KEY']}:{CLOUDINARY_STORAGE['API_SECRET']}@{CLOUDINARY_STORAGE['CLOUD_NAME']}"
 
-# Cloudinary configuration
 cloudinary.config(
     cloud_name=CLOUDINARY_STORAGE['CLOUD_NAME'],
     api_key=CLOUDINARY_STORAGE['API_KEY'],
@@ -42,10 +38,6 @@ cloudinary.config(
     secure=True
 )
 
-# Storage configuration for Django 4.2+
-# - default: Cloudinary handles all media/product image uploads
-# - staticfiles: plain StaticFilesStorage so collectstatic just copies files cleanly.
-#   WhiteNoiseMiddleware in MIDDLEWARE handles compression/serving at runtime.
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
@@ -55,12 +47,9 @@ STORAGES = {
     },
 }
 
-# These legacy settings are required by django-cloudinary-storage (v0.3.0)
-# which still reads them directly from settings instead of using STORAGES dict.
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
-# Prevent Django from scanning app static dirs twice (already covered by AppDirectoriesFinder)
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
@@ -76,8 +65,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 ROOT_URLCONF = 'trendzone.urls'
+
 TEMPLATES = [{
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
     'DIRS': [BASE_DIR / 'shop' / 'templates'],
@@ -88,6 +79,7 @@ TEMPLATES = [{
         'django.contrib.messages.context_processors.messages',
     ]},
 }]
+
 DATABASES = {
     'default': dj_database_url.config(
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
@@ -97,9 +89,21 @@ DATABASES = {
 
 STATIC_URL  = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
 MEDIA_URL   = '/media/'
 MEDIA_ROOT  = BASE_DIR / 'media'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-SESSION_COOKIE_AGE = 86400 * 30   # 30 days — stay logged in
-SESSION_SAVE_EVERY_REQUEST = True  # refresh expiry on every request
+
+SESSION_COOKIE_AGE = 86400 * 30
+SESSION_SAVE_EVERY_REQUEST = True
+
+# ── CSRF & HTTPS fix for Render ──────────────────────────────
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.onrender.com',
+    'http://*.onrender.com',
+]
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SECURE = False
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# ─────────────────────────────────────────────────────────────
