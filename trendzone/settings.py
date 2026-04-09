@@ -103,13 +103,14 @@ CSRF_TRUSTED_ORIGINS = [
     'https://dudefashionrepo.onrender.com',
 ]
 
-# Render is HTTPS — set secure cookies so CSRF token is sent on all devices
-CSRF_COOKIE_SECURE = True
+# Keep CSRF cookie NOT secure so it works on all devices/browsers
+# Render handles HTTPS at the proxy level, Django sees HTTP internally
+CSRF_COOKIE_SECURE = False
 CSRF_COOKIE_SAMESITE = 'Lax'
-CSRF_COOKIE_HTTPONLY = False   # Must be False so JS can read it if needed
-CSRF_USE_SESSIONS = False      # Keep CSRF in cookie (default), not session
+CSRF_COOKIE_HTTPONLY = False
+CSRF_USE_SESSIONS = False
 
-SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = False
 SESSION_COOKIE_SAMESITE = 'Lax'
 
 # Tell Django it's behind an HTTPS proxy (Render's load balancer)
