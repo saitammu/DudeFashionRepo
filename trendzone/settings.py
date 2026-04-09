@@ -8,8 +8,8 @@ import cloudinary.api
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-dudefashion-change-in-production')
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'dudefashionrepo.onrender.com,localhost').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -100,10 +100,18 @@ SESSION_SAVE_EVERY_REQUEST = True
 # ── CSRF & HTTPS fix for Render ──────────────────────────────
 CSRF_TRUSTED_ORIGINS = [
     'https://*.onrender.com',
-    'http://*.onrender.com',
+    'https://dudefashionrepo.onrender.com',
 ]
-CSRF_COOKIE_SECURE = False
+
+# Render is HTTPS — set secure cookies so CSRF token is sent on all devices
+CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'Lax'
-SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_HTTPONLY = False   # Must be False so JS can read it if needed
+CSRF_USE_SESSIONS = False      # Keep CSRF in cookie (default), not session
+
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+
+# Tell Django it's behind an HTTPS proxy (Render's load balancer)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # ─────────────────────────────────────────────────────────────
