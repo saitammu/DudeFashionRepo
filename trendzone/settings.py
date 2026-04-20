@@ -135,14 +135,14 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*.onrender.com',
     'https://dudefashionrepo.onrender.com',
 ]
-CSRF_COOKIE_SECURE   = True     # Required when SameSite=None
-CSRF_COOKIE_SAMESITE = 'None'   # Fixes CSRF on all mobile browsers
+CSRF_COOKIE_SECURE   = True     # Render serves over HTTPS
+CSRF_COOKIE_SAMESITE = 'Lax'    # 'Lax' works on all mobile browsers; 'None' requires third-party cookie support which many mobile browsers block
 CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_AGE      = 31449600 # 1 year — prevents cookie expiry issues
 CSRF_USE_SESSIONS    = False
 
-SESSION_COOKIE_SECURE   = True  # Required when SameSite=None
-SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE   = True
+SESSION_COOKIE_SAMESITE = 'Lax'  # Changed from 'None' to 'Lax' for mobile compatibility
 
 # Tell Django it's behind an HTTPS proxy (Render's load balancer)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

@@ -4,70 +4,101 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-    
-    <!-- Open Graph Meta Tags for WhatsApp Preview -->
     <title>{{ product.name }} – ₹{{ product.price }} | DUDE FASHION</title>
     <meta property="og:title" content="{{ product.name }} – DUDE FASHION"/>
     <meta property="og:description" content="Shop this {{ product.cat }} ({{ product.sub }}) for just ₹{{ product.price }}. Quality men's wear from Bhimavaram's DUDE FASHION."/>
-    
-    <!-- WhatsApp needs an absolute URL for the image -->
     {% if "http" in product.img %}
     <meta property="og:image" content="{{ product.img }}"/>
     {% else %}
     <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ product.img }}"/>
     {% endif %}
-    
     <meta property="og:url" content="{{ request.build_absolute_uri }}"/>
     <meta property="og:type" content="product"/>
     <meta name="description" content="Check out {{ product.name }} at DUDE FASHION. Best men's clothing store in Bhimavaram."/>
-
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'DM Sans',sans-serif;background:#fff;color:#111;overflow-x:hidden}
+        body{font-family:'DM Sans',sans-serif;background:#f8f8f8;color:#111;overflow-x:hidden}
         :root{--accent:#E8C547;--green:#25D366;--r:16px}
-        nav{position:sticky;top:0;z-index:900;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;padding:0 6%;height:66px}
-        .logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:#111;text-decoration:none}.logo em{font-style:normal;color:var(--accent)}
-        .detail-container{padding:4rem 6%;display:grid;grid-template-columns:1fr 1fr;gap:4rem;max-width:1200px;margin:0 auto}
-        .product-img-box{border-radius:var(--r);overflow:hidden;border:1px solid #eee;aspect-ratio:3/4}
-        .product-img-box img{width:100%;height:100%;object-fit:cover}
-        .product-info h1{font-family:'Playfair Display',serif;font-size:2.5rem;margin-bottom:1rem}
-        .cat-tag{color:#999;text-transform:uppercase;font-size:0.8rem;letter-spacing:0.1em;margin-bottom:0.5rem;display:block}
-        .price-row{display:flex;align-items:center;gap:1rem;margin:1.5rem 0}
+        nav{position:sticky;top:0;z-index:900;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:64px;gap:1rem}
+        .logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:#111;text-decoration:none;flex-shrink:0}.logo em{font-style:normal;color:var(--accent)}
+        .back-btn{text-decoration:none;font-weight:600;color:#555;font-size:.88rem;display:flex;align-items:center;gap:.4rem;transition:.2s;white-space:nowrap}.back-btn:hover{color:#111}
+        .detail-container{padding:3rem 5%;display:grid;grid-template-columns:1fr 1fr;gap:4rem;max-width:1100px;margin:0 auto}
+        .product-img-box{border-radius:var(--r);overflow:hidden;border:1.5px solid #eee;aspect-ratio:3/4;background:#f0f0f0}
+        .product-img-box img{width:100%;height:100%;object-fit:cover;display:block}
+        .product-info{display:flex;flex-direction:column;justify-content:center}
+        .product-info h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3vw,2.4rem);margin-bottom:1rem;line-height:1.1}
+        .cat-tag{color:#aaa;text-transform:uppercase;font-size:.72rem;letter-spacing:.12em;margin-bottom:.5rem;display:block;font-weight:700}
+        .price-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin:1.5rem 0}
         .now{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900}
-        .old{text-decoration:line-through;color:#ccc;font-size:1.2rem}
-        .off{color:var(--green);font-weight:700}
-        .btn-wa{background:var(--green);color:#fff;border:none;border-radius:50px;padding:1rem 2rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:1.1rem;text-decoration:none;display:inline-flex;align-items:center;gap:1rem;margin-top:2rem;transition:.2s}
-        .btn-wa:hover{opacity:.85;transform:translateY(-2px)}
-        @media(max-width:768px){.detail-container{grid-template-columns:1fr;gap:2rem}}
+        .old{text-decoration:line-through;color:#ccc;font-size:1.1rem}
+        .off-tag{background:#f0faf4;color:#27ae60;font-weight:700;font-size:.8rem;border-radius:50px;padding:.25rem .7rem}
+        .product-desc{color:#666;line-height:1.7;font-size:.92rem;margin-bottom:2rem}
+        .size-row{margin-bottom:1.5rem}
+        .size-row label{font-size:.78rem;font-weight:700;letter-spacing:.08em;color:#888;text-transform:uppercase;display:block;margin-bottom:.6rem}
+        .size-opts{display:flex;gap:.5rem;flex-wrap:wrap}
+        .sz{width:42px;height:42px;border:1.5px solid #e8e8e8;border-radius:10px;background:#fff;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center}
+        .sz:hover,.sz.sel{border-color:#111;background:#111;color:#fff}
+        .btn-wa-buy{background:var(--green);color:#fff;border:none;border-radius:14px;padding:1rem 2rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:1rem;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:.7rem;transition:.2s;width:100%}
+        .btn-wa-buy:hover{opacity:.9;transform:translateY(-1px)}
+        @media(max-width:768px){
+            nav{padding:0 4%;height:60px}
+            .detail-container{grid-template-columns:1fr;gap:1.5rem;padding:1.5rem 4%}
+            .product-img-box{max-height:380px}
+            .product-info h1{font-size:1.5rem}
+            .now{font-size:1.7rem}
+        }
+        @media(max-width:480px){
+            .detail-container{padding:1rem 3%}
+        }
     </style>
 </head>
 <body>
     <nav>
-        <a class="logo" href="{% url 'index' %}">DUDE <em>FASHION</em></a>
-        <a href="{% url 'shop' %}" style="text-decoration:none;font-weight:600;color:#111">← Back to Shop</a>
+        <a class="logo" href="/">DUDE <em>FASHION</em></a>
+        <a href="/shop/" class="back-btn">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            Back to Shop
+        </a>
     </nav>
 
     <div class="detail-container">
         <div class="product-img-box">
-            <img src="{{ product.img }}" alt="{{ product.name }}">
+            <img src="{{ product.img }}" alt="{{ product.name }}" onerror="this.src='https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=100'">
         </div>
         <div class="product-info">
             <span class="cat-tag">{{ product.cat }} / {{ product.sub }}</span>
             <h1>{{ product.name }}</h1>
-            <p style="color:#666;line-height:1.6">Experience the perfect blend of style and comfort. This premium {{ product.name }} is crafted for the modern man who doesn't compromise on quality.</p>
-            
+            <p class="product-desc">Experience the perfect blend of style and comfort. This premium {{ product.name }} is crafted for the modern man who doesn't compromise on quality.</p>
             <div class="price-row">
                 <span class="now">₹{{ product.price }}</span>
                 <span class="old">₹{{ product.orig }}</span>
-                <span class="off">{{ product.off }}% OFF</span>
+                <span class="off-tag">{{ product.off }}% OFF</span>
             </div>
-
-            <a href="https://wa.me/{{ wa }}?text=Hi%20DUDE%20FASHION!%20I%20want%20to%20buy%20this%3A%20{{ product.name|urlencode }}%20at%20%E2%82%B9{{ product.price }}.%20Link%3A%20{{ request.build_absolute_uri|urlencode }}" target="_blank" class="btn-wa">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            <div class="size-row">
+                <label>Select Size</label>
+                <div class="size-opts">
+                    <button class="sz" onclick="selSize(this)">S</button>
+                    <button class="sz sel" onclick="selSize(this)">M</button>
+                    <button class="sz" onclick="selSize(this)">L</button>
+                    <button class="sz" onclick="selSize(this)">XL</button>
+                    <button class="sz" onclick="selSize(this)">XXL</button>
+                </div>
+            </div>
+            <a id="waLink" href="https://wa.me/{{ wa }}?text=Hi%20DUDE%20FASHION!%20I%20want%20to%20buy%3A%20{{ product.name|urlencode }}%20at%20%E2%82%B9{{ product.price }}.%20Size%3A%20M.%20Link%3A%20{{ request.build_absolute_uri|urlencode }}" target="_blank" class="btn-wa-buy">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                 Order on WhatsApp
             </a>
         </div>
     </div>
+    <script>
+    const baseUrl='https://wa.me/{{ wa }}?text=Hi%20DUDE%20FASHION!%20I%20want%20to%20buy%3A%20{{ product.name|urlencode }}%20at%20%E2%82%B9{{ product.price }}.%20Size%3A%20';
+    const suffix='.%20Link%3A%20{{ request.build_absolute_uri|urlencode }}';
+    function selSize(btn){
+        document.querySelectorAll('.sz').forEach(b=>b.classList.remove('sel'));
+        btn.classList.add('sel');
+        document.getElementById('waLink').href=baseUrl+encodeURIComponent(btn.textContent)+suffix;
+    }
+    </script>
 </body>
 </html>
